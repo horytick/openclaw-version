@@ -7,7 +7,7 @@ Automatically syncs main branch updates, rebases onto dev branch, and rebuilds.
 import subprocess
 import sys
 
-PROJECT_PATH = "/Users/moss/openclaw"
+PROJECT_PATH = "~/openclaw"
 DEV_BRANCH = "mydev-rebase"
 MAIN_BRANCH = "main"
 
