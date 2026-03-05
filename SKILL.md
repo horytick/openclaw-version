@@ -8,7 +8,7 @@ description: Manage OpenClaw code synchronization, rebasing, and global builds. 
 ## Core Context
 
 - **Project Path:** `~/openclaw` (absolute: `/Users/moss/openclaw`)
-- **Driver Script:** `scripts/sync_and_build.py` (bundled in this skill)
+- **Driver Script:** `sync_and_build.py` — located in the **same directory as this SKILL.md** (`~/.openclaw/skills/openclaw-version/sync_and_build.py`)
 - **Branch Strategy:**
   - `main`: Remote tracking only — NEVER manually modify
   - `mydev-rebase`: User's custom development branch, rebases onto main
@@ -23,7 +23,14 @@ description: Manage OpenClaw code synchronization, rebasing, and global builds. 
 ### Phase 2: Execute Build Script
 
 ```bash
-cd ~/openclaw && python3 scripts/sync_and_build.py
+# Option A: Script in same directory as SKILL.md
+python3 ~/.openclaw/skills/openclaw-version/sync_and_build.py
+
+# Option B: Manual fallback (if script doesn't exist)
+cd ~/openclaw
+git checkout main && git pull origin main
+git checkout mydev-rebase && git rebase main
+pnpm install && pnpm ui:build && pnpm build && pnpm link --global
 ```
 
 ### Phase 3: Handle Results
@@ -50,23 +57,18 @@ cd ~/openclaw && python3 scripts/sync_and_build.py
 
 ## Bundled Scripts
 
-This skill includes `scripts/sync_and_build.py` which automates:
+This skill includes `sync_and_build.py` located at **`<skill-directory>/sync_and_build.py`** (where `<skill-directory>` is the same folder containing this SKILL.md, i.e., `~/.openclaw/skills/openclaw-version/`).
+
+The script automates:
 
 1. Checkout and pull `main`
 2. Checkout `mydev-rebase` and rebase onto `main`
 3. Run `pnpm install && pnpm ui:build && pnpm build && pnpm link --global`
 
-Execute the script directly rather than re-implementing the workflow.
-
-## Manual Fallback Commands
-
-If script is unavailable:
+Execute the script directly rather than re-implementing the workflow:
 
 ```bash
-cd ~/openclaw
-git checkout main && git pull origin main
-git checkout mydev-rebase && git rebase main
-pnpm install && pnpm ui:build && pnpm build && pnpm link --global
+python3 ~/.openclaw/skills/openclaw-version/sync_and_build.py
 ```
 
 ## Conflict Resolution
